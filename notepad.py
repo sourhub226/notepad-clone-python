@@ -97,7 +97,7 @@ def check_statusbar():
     if statusbar_toggle.get():
         print("sb on")
         text_frame.pack_forget()
-        status_frame.pack(fill=X,side=BOTTOM)
+        status_frame.pack(fill=X,side=BOTTOM,pady=1)
         text_frame.pack(fill=BOTH,expand=True,side=TOP)
     else:
         print("sb off")
@@ -117,7 +117,7 @@ def help_box():
         aw_width=500
         aw_height=350
         about_window.geometry('%dx%d+%d+%d' % (aw_width, aw_height, (screen_width-aw_width)/2 , (screen_height-aw_height)/2-100))
-        # about_window.resizable(0,0)
+        about_window.resizable(0,0)
         about_window.iconbitmap("info.ico")
         about_window.title("About")
         about_window.focus()
