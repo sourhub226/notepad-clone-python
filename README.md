@@ -4,13 +4,14 @@
 # Windows Notepad GUI
 
 Created entirely in python using `Tkinter` module.
+Now with HiDPI display support!
 
 ![Notepad GUI](preview.png)
 
-### Dependency:
+### Dependencies:
 * [`tkfontchooser`](https://pypi.org/project/tkfontchooser/)
+* [`hdpitkinter`](https://pypi.org/project/hdpitkinter/)
 
-
-Install the above dependency using the following command
+Install the above dependencies using the following command
 
     pip install -r requirements.txt
