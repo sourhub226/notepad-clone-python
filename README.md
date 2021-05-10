@@ -8,7 +8,7 @@ Now with HiDPI display support!
 
 ![Notepad GUI](preview.png)
 
-### Dependencies:
+### Python Dependencies
 * [`tkfontchooser`](https://pypi.org/project/tkfontchooser/)
 * [`hdpitkinter`](https://pypi.org/project/hdpitkinter/)
 
