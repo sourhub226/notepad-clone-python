@@ -1,1 +1,2 @@
 tkfontchooser==2.0.2
+hdpitkinter==1.0.3
