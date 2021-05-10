@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.font as tkFont
-from tkinter import scrolledtext,filedialog
+from tkinter import scrolledtext
+from tkinter import filedialog
 import os
 from tkinter import ttk
 from tkinter import messagebox
