@@ -26,8 +26,8 @@ jobs:
         uses: ryan-rozario/pipreqs-action@v2.0.0
         with:
           # Gives the path of the project
-          PROJECT_PATH: . # default is .
+          PROJECT_PATH:  # default is .
           # Folder where requirements.txt has to be saved in
-          REQUIREMENT_PATH: ./requirements.txt # default is requirements.txt
+          REQUIREMENT_PATH:  # default is requirements.txt
           # Name of the project to include in the commit
-          PROJECT_NAME: "notepad-clone-python" # default is 
+          PROJECT_NAME: notepad-clone-python # default is 
