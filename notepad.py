@@ -4,9 +4,9 @@ from tkinter import scrolledtext
 from tkinter import filedialog
 import os
 from tkinter import ttk
-from tkinter import messagebox
 from tkfontchooser import askfont
 import webbrowser
+from hdpitkinter import HdpiTk
 
 
 status_color="#f7f7f7"
@@ -15,7 +15,8 @@ warning_window=about_window=None
 zoom=100
 window_title="Untitled - Notepad"
 
-root=Tk()
+# root=Tk()
+root=HdpiTk()
 root.title(window_title)
 root.geometry("800x500")
 root.config(bg="#d3d3d3")
