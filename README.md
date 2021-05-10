@@ -7,5 +7,10 @@ Created entirely in python using `Tkinter` module.
 
 ![Notepad GUI](preview.png)
 
-### Prerequisites:
+### Dependency:
 * [`tkfontchooser`](https://pypi.org/project/tkfontchooser/)
+
+
+Install the above dependency using the following command
+
+    pip install -r requirements.txt
