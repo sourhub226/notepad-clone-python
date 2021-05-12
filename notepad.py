@@ -130,7 +130,7 @@ def help_box():
         image_label.image=img
         text_label=Label(about_window,text="Made by Sourabh Sathe.\nCheck out my other projects on Github!",bg=status_color)
         link_label=Label(about_window,text="sourhub226\n(github.com/sourhub226)", fg="blue", cursor="hand2",bg=status_color)
-        link_label.bind("<Button-1>", lambda e: webbrowser.open_new("https://github.com/sourhub226"))
+        link_label.bind("<Button-1>", lambda _: webbrowser.open_new("https://github.com/sourhub226"))
         image_label.pack()
         ttk.Separator(about_window,orient=HORIZONTAL).pack(fill=X,padx=20,pady=20)
         text_label.pack()
@@ -287,7 +287,7 @@ def save_file():
 
 
 def open_box(): 
-    global window_title
+    global window_title,save_req
     file = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Text Documents","*.txt"),("All Files","*.*")]) 
     if file == "": 
         file = None
@@ -378,12 +378,12 @@ text_frame.pack(fill=BOTH,expand=True,side=TOP)
 text_area.pack(fill=BOTH,expand=True,side=TOP,padx=(5,0))
 
 text_area.bind("<Key>", edit)
-text_area.bind('<Control-equal>',lambda e: zoomin())
-text_area.bind('<Control-minus>',lambda e: zoomout())
-text_area.bind('<Control-0>',lambda e: default_zoom())
-text_area.bind('<Control-s>',lambda e: save_file())
-text_area.bind('<Control-n>',lambda e: new_file())
-text_area.bind('<Control-o>',lambda e: open_file())
+text_area.bind('<Control-equal>',lambda _: zoomin())
+text_area.bind('<Control-minus>',lambda _: zoomout())
+text_area.bind('<Control-0>',lambda _: default_zoom())
+text_area.bind('<Control-s>',lambda _: save_file())
+text_area.bind('<Control-n>',lambda _: new_file())
+text_area.bind('<Control-o>',lambda _: open_file())
 root.protocol("WM_DELETE_WINDOW", exit)
 root.config(menu = menubar) 
 root.mainloop()
