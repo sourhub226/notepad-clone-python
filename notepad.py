@@ -1,23 +1,53 @@
-from tkinter import *
+from tkinter.constants import (
+    BOTH,
+    BOTTOM,
+    END,
+    HORIZONTAL,
+    LEFT,
+    NONE,
+    RIGHT,
+    TOP,
+    VERTICAL,
+    W,
+    WORD,
+    X,
+    Y,
+)
 import tkinter.font as tkFont
-from tkinter import scrolledtext
-from tkinter import filedialog
+from tkinter import (
+    Frame,
+    IntVar,
+    Label,
+    Menu,
+    PhotoImage,
+    Scrollbar,
+    Toplevel,
+    scrolledtext,
+    filedialog,
+    ttk,
+)
 import os
-from tkinter import ttk
 from tkfontchooser import askfont
 import webbrowser
 from hdpitkinter import HdpiTk
 
-
 status_color = "#f7f7f7"
-save_req = False
-warning_window = about_window = None
-zoom = 100
-window_title = "Untitled - Notepad"
+
+
+class Global:
+    def __init__(self):
+        self.save_req = False
+        self.warning_window = None
+        self.about_window = None
+        self.zoom = 100
+        self.window_title = "Untitled - Notepad"
+
+
+Global = Global()
 
 # root=Tk()
 root = HdpiTk()
-root.title(window_title)
+root.title(Global.window_title)
 root.geometry("800x500")
 root.config(bg="#d3d3d3")
 root.iconbitmap("notepad.ico")
@@ -53,7 +83,7 @@ def calc_lnWdCh():
 
 # Improve this funtion
 def edit(event):
-    global save_req, window_title
+    # global save_req, window_title
     text_area.after(1, func=calc_lnWdCh)
 
     command = None
@@ -76,9 +106,9 @@ def edit(event):
     if ((n > 0 and n < 60000) or n == 65293 or n == 65289) and (
         command != "ctrl+" or c == "ctrl+v"
     ):
-        root.title(f"*{window_title}")
-        save_req = True
-        print(save_req)
+        root.title(f"*{Global.window_title}")
+        Global.save_req = True
+        print(Global.save_req)
 
 
 def check_wordwrap():
@@ -106,19 +136,19 @@ def check_statusbar():
 
 
 def destroy_about():
-    global about_window
-    about_window.destroy()
-    about_window = None
+    # global about_window
+    Global.about_window.destroy()
+    Global.about_window = None
 
 
 def help_box():
-    global about_window
-    if about_window is None:
-        about_window = Toplevel(root, bg=status_color)
-        about_window.transient(root)
+    # global about_window
+    if Global.about_window is None:
+        Global.about_window = Toplevel(root, bg=status_color)
+        Global.about_window.transient(root)
         aw_width = 500
         aw_height = 350
-        about_window.geometry(
+        Global.about_window.geometry(
             "%dx%d+%d+%d"
             % (
                 aw_width,
@@ -127,22 +157,22 @@ def help_box():
                 (screen_height - aw_height) / 2 - 100,
             )
         )
-        about_window.resizable(0, 0)
-        about_window.iconbitmap("info.ico")
-        about_window.title("About")
-        about_window.focus()
-        about_window.protocol("WM_DELETE_WINDOW", destroy_about)
-        ok_button = ttk.Button(about_window, text="OK", command=destroy_about)
+        Global.about_window.resizable(0, 0)
+        Global.about_window.iconbitmap("info.ico")
+        Global.about_window.title("About")
+        Global.about_window.focus()
+        Global.about_window.protocol("WM_DELETE_WINDOW", destroy_about)
+        ok_button = ttk.Button(Global.about_window, text="OK", command=destroy_about)
         img = PhotoImage(file="notepad.png").subsample(3)
-        image_label = Label(about_window, image=img, bg=status_color)
+        image_label = Label(Global.about_window, image=img, bg=status_color)
         image_label.image = img
         text_label = Label(
-            about_window,
+            Global.about_window,
             text="Made by Sourabh Sathe.\nCheck out my other projects on Github!",
             bg=status_color,
         )
         link_label = Label(
-            about_window,
+            Global.about_window,
             text="sourhub226\n(github.com/sourhub226)",
             fg="blue",
             cursor="hand2",
@@ -152,12 +182,14 @@ def help_box():
             "<Button-1>", lambda _: webbrowser.open_new("https://github.com/sourhub226")
         )
         image_label.pack()
-        ttk.Separator(about_window, orient=HORIZONTAL).pack(fill=X, padx=20, pady=20)
+        ttk.Separator(Global.about_window, orient=HORIZONTAL).pack(
+            fill=X, padx=20, pady=20
+        )
         text_label.pack()
         link_label.pack()
         ok_button.pack(side=BOTTOM, pady=10)
     else:
-        about_window.focus()
+        Global.about_window.focus()
 
 
 def cut():
@@ -189,9 +221,9 @@ def select_all():
 
 
 def destory_warning():
-    global warning_window
-    warning_window.destroy()
-    warning_window = None
+    # global warning_window
+    Global.warning_window.destroy()
+    Global.warning_window = None
 
 
 def clear_textarea():
@@ -200,17 +232,17 @@ def clear_textarea():
 
 
 def destory_warning_clr(fopen):
-    global save_req
+    # global save_req
     destory_warning()
     clear_textarea()
     if fopen:
         open_box()
-        save_req = False
+        Global.save_req = False
 
 
 def prompt_save(new, fopen):
     destory_warning()
-    save_file(None)
+    save_file()
     if new:
         clear_textarea()
     if fopen:
@@ -218,13 +250,13 @@ def prompt_save(new, fopen):
 
 
 def open_save_box(destroy, new, fopen):
-    global warning_window
-    if warning_window is None:
-        warning_window = Toplevel(root, bg="white")
-        warning_window.transient(root)
+    # global warning_window
+    if Global.warning_window is None:
+        Global.warning_window = Toplevel(root, bg="white")
+        Global.warning_window.transient(root)
         ww_width = 350
         ww_height = 100
-        warning_window.geometry(
+        Global.warning_window.geometry(
             "%dx%d+%d+%d"
             % (
                 ww_width,
@@ -233,14 +265,14 @@ def open_save_box(destroy, new, fopen):
                 (screen_height - ww_height) / 2 - 50,
             )
         )
-        warning_window.resizable(0, 0)
-        warning_window.iconbitmap("warning.ico")
-        warning_window.title("Save")
-        warning_window.focus()
-        warning_window.protocol("WM_DELETE_WINDOW", destory_warning)
+        Global.warning_window.resizable(0, 0)
+        Global.warning_window.iconbitmap("warning.ico")
+        Global.warning_window.title("Save")
+        Global.warning_window.focus()
+        Global.warning_window.protocol("WM_DELETE_WINDOW", destory_warning)
 
-        top_frame = Frame(warning_window, bg="white")
-        bottom_frame = Frame(warning_window, bg=status_color)
+        top_frame = Frame(Global.warning_window, bg="white")
+        bottom_frame = Frame(Global.warning_window, bg=status_color)
         save_btn = ttk.Button(
             bottom_frame, text="Save", command=lambda: prompt_save(new, fopen)
         )
@@ -248,7 +280,7 @@ def open_save_box(destroy, new, fopen):
         cancel_btn = ttk.Button(bottom_frame, text="Cancel", command=destory_warning)
         save_label = Label(
             top_frame,
-            text=f'Do you want to save changes to {window_title.split(" ",1)[0]}?',
+            text=f'Do you want to save changes to {Global.window_title.split(" ",1)[0]}?',
             font=("Segoe UI", 12),
             bg="white",
             fg="#003399",
@@ -268,58 +300,58 @@ def open_save_box(destroy, new, fopen):
             dontsave_btn.config(command=lambda: destory_warning_clr(fopen))
 
     else:
-        warning_window.focus()
+        Global.warning_window.focus()
 
 
-def exit():
-    global save_req
-    if save_req and text_area.get("1.0", "end") != "\n":
+def exit_app():
+    # global save_req
+    if Global.save_req and text_area.get("1.0", "end") != "\n":
         open_save_box(True, False, False)
     else:
         root.destroy()
 
 
 def zoomin():
-    global zoom
-    if zoom >= 500:
+    # global zoom
+    if Global.zoom >= 500:
         return
     print("zoom")
     fontsize = fontStyle["size"]
     fontStyle.configure(size=fontsize + 1)
-    zoom += 10
-    label3.config(text=f"{zoom}%")
+    Global.zoom += 10
+    label3.config(text=f"{Global.zoom}%")
 
 
 def zoomout():
-    global zoom
-    if zoom <= 10:
+    # global zoom
+    if Global.zoom <= 10:
         return
     print("zoom down")
     fontsize = fontStyle["size"]
     fontStyle.configure(size=fontsize - 1)
-    zoom -= 10
-    label3.config(text=f"{zoom}%")
+    Global.zoom -= 10
+    label3.config(text=f"{Global.zoom}%")
 
 
 def default_zoom():
-    global zoom
+    # global zoom
     print("default zoom")
     fontsize = 11
     fontStyle.configure(size=fontsize)
-    zoom = 100
-    label3.config(text=f"{zoom}%")
+    Global.zoom = 100
+    label3.config(text=f"{Global.zoom}%")
 
 
 def new_file():
-    global save_req
-    if save_req or text_area.get("1.0", "end") != "\n":
+    # global save_req
+    if Global.save_req or text_area.get("1.0", "end") != "\n":
         open_save_box(False, True, False)
 
 
 def save_file():
-    global save_req, window_title
+    # global save_req, window_title
     file_name = None
-    if save_req:
+    if Global.save_req:
         if file_name is None:
             file_name = filedialog.asksaveasfilename(
                 initialfile="*.txt",
@@ -332,17 +364,17 @@ def save_file():
             else:
                 with open(file_name, "w") as file:
                     file.write(text_area.get(1.0, END))
-                window_title = os.path.basename(file_name) + " - Notepad"
-                root.title(window_title)
-                save_req = False
+                Global.window_title = os.path.basename(file_name) + " - Notepad"
+                root.title(Global.window_title)
+                Global.save_req = False
         else:
             with open(file_name, "w") as file:
                 file.write(text_area.get(1.0, END))
-            save_req = False
+            Global.save_req = False
 
 
 def open_box():
-    global window_title, save_req
+    # global window_title, save_req
     file = filedialog.askopenfilename(
         defaultextension=".txt",
         filetypes=[("Text Documents", "*.txt"), ("All Files", "*.*")],
@@ -350,17 +382,17 @@ def open_box():
     if file == "":
         file = None
     else:
-        window_title = os.path.basename(file) + " - Notepad"
-        root.title(window_title)
+        Global.window_title = os.path.basename(file) + " - Notepad"
+        root.title(Global.window_title)
         text_area.delete(1.0, END)
         with open(file, "r") as file:
             text_area.insert(1.0, file.read())
-        save_req = False
+        Global.save_req = False
 
 
 def open_file():
-    global save_req
-    if save_req and text_area.get("1.0", "end") != "\n":
+    # global save_req
+    if Global.save_req and text_area.get("1.0", "end") != "\n":
         open_save_box(False, False, True)
     else:
         open_box()
@@ -373,7 +405,7 @@ file_menu.add_command(label="New", command=new_file)
 file_menu.add_command(label="Open...", command=open_file)
 file_menu.add_command(label="Save", command=save_file)
 file_menu.add_separator()
-file_menu.add_command(label="Exit", command=exit)
+file_menu.add_command(label="Exit", command=exit_app)
 
 edit_menu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Edit", menu=edit_menu)
@@ -438,7 +470,7 @@ ttk.Separator(status_frame, orient=VERTICAL).pack(fill=Y, side=RIGHT)
 label2 = Label(status_frame, text="Windows (CRLF)", bg=status_color, width=14, anchor=W)
 label2.pack(fill=BOTH, side=RIGHT, padx=5)
 ttk.Separator(status_frame, orient=VERTICAL).pack(fill=Y, side=RIGHT)
-label3 = Label(status_frame, text=f"{zoom}%", bg=status_color, anchor=W)
+label3 = Label(status_frame, text=f"{Global.zoom}%", bg=status_color, anchor=W)
 label3.pack(fill=BOTH, side=RIGHT, padx=5)
 ttk.Separator(status_frame, orient=VERTICAL).pack(fill=Y, side=RIGHT)
 label4 = Label(
@@ -458,6 +490,6 @@ text_area.bind("<Control-0>", lambda _: default_zoom())
 text_area.bind("<Control-s>", lambda _: save_file())
 text_area.bind("<Control-n>", lambda _: new_file())
 text_area.bind("<Control-o>", lambda _: open_file())
-root.protocol("WM_DELETE_WINDOW", exit)
+root.protocol("WM_DELETE_WINDOW", exit_app)
 root.config(menu=menubar)
 root.mainloop()
